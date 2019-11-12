@@ -1,10 +1,9 @@
 {
   "name": "vue-datepicker-scroll",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "移动端简约的可滑动组件，支持同时选择日期和时间。",
   "main": "lib/vue-datepicker-scroll.umd.min.js",
-  "keyword": "vue datepicker date picker",
-  "author": "Elliotts su",
+  "author": "Elliotts Su",
   "license": "MIT",
   "private": false,
   "scripts": {
@@ -15,7 +14,6 @@
   },
   "dependencies": {
     "core-js": "^3.3.2",
-    "node-red-contrib-composer": "0.0.13",
     "vue": "^2.6.10"
   },
   "devDependencies": {
@@ -25,10 +23,24 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "sass": "^1.23.3",
+    "node-sass": "^4.13.0",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Elliottssu/vue-datepicker-scroll.git"
+  },
+  "keywords": [
+    "vue",
+    "datepicker",
+    "date",
+    "picker"
+  ],
+  "bugs": {
+    "url": "https://github.com/Elliottssu/vue-datepicker-scroll/issues"
+  },
+  "style": "lib/vue-datepicker-scroll.css",
   "eslintConfig": {
     "root": true,
     "env": {
