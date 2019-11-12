@@ -1,11 +1,17 @@
 {
   "name": "vue-datepicker-scroll",
   "version": "1.1.0",
-  "private": true,
+  "description": "移动端简约的可滑动组件，支持同时选择日期和时间。",
+  "main": "lib/vue-datepicker-scroll.umd.min.js",
+  "keyword": "vue datepicker date picker",
+  "author": "Elliotts su",
+  "license": "MIT",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "lib": "vue-cli-service build --target lib --name vue-datepicker-scroll --dest lib packages/index.js"
   },
   "dependencies": {
     "core-js": "^3.3.2",
