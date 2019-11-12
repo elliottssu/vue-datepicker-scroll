@@ -36,7 +36,7 @@
 <script type="text/ecmascript-6">
 import pickerItem from "./item";
 export default {
-  name: "datepicker",
+  name: "DatePickerScroll",
   data() {
     return {
       liHeight: 0,

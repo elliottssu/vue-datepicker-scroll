@@ -7,7 +7,7 @@
       <span class="right">{{value3}}</span>
     </button>
 
-    <datepicker :visible.sync="visible3" :data="pickerData3" v-model="value3"></datepicker>
+    <date-picker-scroll :visible.sync="visible3" :data="pickerData3" v-model="value3"></date-picker-scroll>
   </div>
 </template>
 
@@ -21,7 +21,6 @@ export default {
 </script>
 
 <script type="text/ecmascript-6">
-import datepicker from "./datepicker/index";
 
 export default {
   name: "HelloWorld",
@@ -53,7 +52,7 @@ export default {
     };
   },
   props: { msg: String },
-  components: { datepicker },
+  components: {  },
   methods: {
     _change1(v, index) {
       console.log("change");
