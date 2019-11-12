@@ -1,4 +1,4 @@
-import DatePickerScroll from './src'
+import DatePickerScroll from './src/picker'
 
 /* istanbul ignore next */
 DatePickerScroll.install = function (Vue) {

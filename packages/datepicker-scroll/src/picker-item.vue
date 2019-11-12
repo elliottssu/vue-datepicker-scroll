@@ -8,7 +8,12 @@
   >
     <div class="picker-mask" :style="pickerMask"></div>
     <ul class="picker-li" :style="transformStyle">
-      <li v-for="(item, index) in data" v-text="item.name||item" :key="index" :class="{'disabled':item.disabled}"></li>
+      <li
+        v-for="(item, index) in data"
+        v-text="item.name||item"
+        :key="index"
+        :class="{'disabled':item.disabled}"
+      ></li>
     </ul>
   </div>
 </template>
@@ -62,11 +67,15 @@ export default {
     _onTouchEnd() {
       let index = Math.round(this.offset / this.$parent.liHeight);
       const vc = this._getVisibleCount();
-      console.log("liHeight:" + this.$parent.liHeight);
-      console.log("this.offset:" + this.offset);
-      console.log("index:" + index);
+      // console.log("liHeight:" + this.$parent.liHeight);
+      // console.log("this.offset:" + this.offset);
+      // console.log("index:" + index);
       // index的有效范围
       const indexMax = vc - this.data.length;
+
+      // console.log(index, this.data, this.data.length, indexMax, vc);
+
+
       if (index >= vc) {
         index = 0; // 选择第一个
       } else if (index < indexMax) {
@@ -84,7 +93,7 @@ export default {
             index = vc - index;
           }
         }*/
-      console.log("index2:" + index);
+      // console.log("index2:" + index);
       this._setIndex(index, true);
     },
     _setIndex(index, bool) {
@@ -146,7 +155,15 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: none;
+}
+
 .picker-item {
   width: 100%;
   position: relative;

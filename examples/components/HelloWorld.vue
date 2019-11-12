@@ -1,33 +1,24 @@
 <template>
   <div>
-    <h1>{{ msg }}</h1>
+    <button @click="isPickerVisable=true">点击我选择</button>
+    <p>{{pickerValue}}</p>
 
-    <button @click="visible3=true">
-      你选择了
-      <span class="right">{{value3}}</span>
-    </button>
-
-    <date-picker-scroll :visible.sync="visible3" :data="pickerData3" v-model="value3"></date-picker-scroll>
+    <date-picker-scroll
+      v-model="pickerValue"
+      :visible.sync="isPickerVisable"
+      :data="pickerData"
+      :onConfirm="handelConfirm"
+    ></date-picker-scroll>
   </div>
 </template>
 
-<script>
-export default {
-  name: "HelloWorld",
-  props: {
-    msg: String
-  }
-};
-</script>
-
 <script type="text/ecmascript-6">
-
 export default {
   name: "HelloWorld",
   data() {
     return {
-      visible3: false,
-      pickerData3: [
+      isPickerVisable: false,
+      pickerData: [
         {
           value: [
             "2019年11月12日 今天",
@@ -38,7 +29,7 @@ export default {
             "2019年11月17日 周日",
             "2019年11月18日 周一",
             "2019年11月19日 周二",
-            "2019年11月20日 周三"
+            "2019年11月20日 周三",
           ]
         },
         {
@@ -48,14 +39,16 @@ export default {
           value: ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09"]
         }
       ],
-      value3: ["2019年11月13日 周三", "08", "02"]
+      pickerValue: ["2019年11月13日 周三", "08", "02"]
     };
   },
-  props: { msg: String },
-  components: {  },
+  props: {},
+  components: {},
   methods: {
-    _change1(v, index) {
-      console.log("change");
+    // 确定按钮
+    handelConfirm(value, index) {
+      this.pickerValue = value;
+      console.log("您选择了", this.pickerValue, index);
     }
   },
   computed: {},
@@ -63,5 +56,11 @@ export default {
   filters: {}
 };
 </script>
+<style scoped>
+button {
+  font-size: 20px;
+  border: 1px solid #dccfcf;
+}
+</style>
 
 

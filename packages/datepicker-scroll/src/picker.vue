@@ -1,21 +1,28 @@
 <template>
   <div class="picker">
     <transition name="fade">
-      <div class="mask" v-show="visible" @click="_maskClick"></div>
+      <div class="mask" v-show="visible" @click="handleCancel"></div>
     </transition>
     <transition name="slide">
       <div class="picker-content" v-show="visible" ref="content">
+        <!-- 遮罩打开关闭区域 -->
         <div class="picker-control">
-          <a href="javascript:;" class="picker-cancel" v-text="cancelText" @click="_cancelClick"></a>
-          <span v-text="title" v-if="title" class="picker-title"></span>
           <a
-            href="javascript:;"
+            href="javascript:void(0);"
+            class="picker-cancel"
+            v-text="cancelText"
+            @click="handleCancel"
+          >取消</a>
+          <span v-text="titleText" v-if="titleText" class="picker-title"></span>
+          <a
+            href="javascript:void(0);"
             class="picker-confirm"
             v-text="confirmText"
-            @click="_confirmClick"
+            @click="handleConfirm"
           >确定</a>
         </div>
-        <div class="picker-group" :style="{height:visibleCount*liHeight+'px'}">
+        <!-- 选择区域 -->
+        <div class="picker-group" :style="{ height: visibleCount * liHeight + 'px' }">
           <div class="picker-border"></div>
           <pickerItem
             v-for="(item,index) in data"
@@ -23,7 +30,7 @@
             :key="index"
             :index="index"
             :height="liHeight"
-            :change="_change"
+            :change="handelChange"
             :value="typeof value=='string'?value:value[index]"
             ref="item"
           ></pickerItem>
@@ -34,7 +41,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import pickerItem from "./item";
+import pickerItem from "./picker-item";
+
 export default {
   name: "DatePickerScroll",
   data() {
@@ -45,73 +53,46 @@ export default {
   },
   watch: {
     visible(v) {
-      //初始时数据为空，在显示时再计算位置
+      // 初始时数据为空，在显示时再计算位置
       if (v && this.liHeight == 0) {
-        this._getDisplayHeight();
+        this.getDisplayHeight();
       }
     }
   },
   props: {
-    visible: {
-      //显示或隐藏，通过sync实现双向绑定
-      type: Boolean,
-      default: false
-    },
-    maskClose: {
-      //点闭遮罩层是否关闭
-      type: Boolean,
-      default: true
-    },
-    cancelText: {
-      //取消按钮文本
-      type: String,
-      default: "取消"
-    },
-    cancelEvent: Function,
-    confirmText: {
-      //确定按钮文本
-      type: String,
-      default: "确认"
-    },
-    confirmEvent: Function,
-    change: Function,
-    title: {
-      type: String,
-      default: "请选择"
-    },
-    visibleCount: {
-      //显示的个数
-      type: Number,
-      default: 5
-    },
-    data: Array,
-    value: [String, Array]
+    visible: { ype: Boolean, default: false }, // 显示或隐藏
+    cancelText: { type: String, default: "取消" }, // 取消按钮文本
+    confirmText: { type: String, default: "确认" }, // 确定按钮文本
+    titleText: { type: String, default: "请选择" }, // 标题文本
+    visibleCount: { type: Number, default: 5 }, //显示的个数
+    data: Array, // 数据列表
+    value: [String, Array], // 返回的数值
+    onCancel: Function, // 取消事件
+    onConfirm: Function, // 确定事件
+    onChange: Function // 下拉改变时间
   },
-  components: { pickerItem },
+  components: {
+    pickerItem
+  },
   methods: {
-    _maskClick(e) {
-      //点闭遮罩层是否关闭
-      this.maskClose ? this._cancelClick(e) : "";
-    },
-    _cancelClick(e) {
-      //点击取消，关闭退出
-      //恢复状态
+    // 取消
+    handleCancel(e) {
       let item = this.$refs.item;
       for (let i in item) {
         item[i]._moveTo();
       }
       this.$emit("update:visible", false);
-      this.cancelEvent ? this.cancelEvent(this.value) : "";
+      this.onCancel ? this.onCancel(this.value) : "";
       e.stopPropagation();
     },
-    _confirmClick(e) {
-      //this._cancelClick();
+    // 确认
+    handleConfirm(e) {
       this.$emit("update:visible", false);
-      this.confirmEvent ? this.confirmEvent(this.newValue) : "";
-      this.$emit("input", this.newValue);
+      this.onConfirm ? this.onConfirm(this.newValue) : this.$emit("input", this.newValue);
       e.stopPropagation();
     },
-    _change(value, index, bool) {
+    // 选择项改变
+    handelChange(value, index, bool) {
       //这里修改为点击确认才更新选中值
       if (typeof this.value == "string") {
         //this.$emit('input', value);
@@ -127,10 +108,10 @@ export default {
       }
       //bool=false时是初始时设置的
       if (bool) {
-        this.change ? this.change(value, index) : "";
+        this.onChange ? this.onChange(value, index) : "";
       }
     },
-    _getDisplayHeight() {
+    getDisplayHeight() {
       //取隐藏标签的高
       const obj = this.$refs.content;
       const clone = obj.cloneNode(true);
@@ -147,96 +128,26 @@ export default {
       obj.parentNode.removeChild(clone);
     }
   },
-  computed: {
-    /*pickerBorder(){
-             return {
-             top: Math.floor(this.visibleCount / 2) * this.liHeight + 'px'
-             }
-             }*/
-  },
+  computed: {},
   mounted() {
-    this._getDisplayHeight();
+    this.getDisplayHeight();
   },
   filters: {}
 };
 </script>
 
-<style lang="scss">
-html,
-body,
-div,
-span,
-table,
-tbody,
-tr,
-th,
-td,
-em,
-img,
-strong,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-a,
-dl,
-dt,
-dd,
-ol,
+<style lang="scss" scoped>
 ul,
-li,
-form,
-label,
-input {
+li {
   margin: 0;
   padding: 0;
   list-style: none;
   outline: none;
 }
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-b {
-  font-weight: 400;
-}
-a,
-img {
-  border: none;
-}
-input,
-select,
-textarea,
-button {
-  appearance: none;
-  -webkit-appearance: none;
-  outline: none;
-}
-* {
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-tap-highlight-color: transparent;
-}
-a,
-button,
-input,
-label,
-select {
-  -webkit-tap-highlight-color: transparent;
-}
-body {
-  font-family: Arial, "Microsoft YaHei", "simsun";
-  color: #666;
-}
 a {
   color: #666;
   text-decoration: none;
 }
-
 .picker {
   touch-action: none;
   .mask {
