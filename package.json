@@ -1,6 +1,6 @@
 {
   "name": "vue-datepicker-scroll",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "移动端简约的可滑动组件，支持同时选择日期和时间。",
   "main": "lib/vue-datepicker-scroll.umd.min.js",
   "author": "Elliotts Su",

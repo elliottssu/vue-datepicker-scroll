@@ -3,6 +3,7 @@
     <button @click="isPickerVisable=true">点击我选择</button>
     <p>{{selectedTime}}</p>
 
+    <!-- 组件引入部分 -->
     <date-picker-scroll
       v-model="selectedTime"
       startDate="2019-11-10"
@@ -25,7 +26,7 @@ export default {
   props: {},
   components: {},
   methods: {
-    // 确定按钮
+    // 点击确定按钮事件
     handelConfirm(value) {
       this.selectedTime = value;
       console.log("您选择了", this.selectedTime);
@@ -36,6 +37,7 @@ export default {
   filters: {}
 };
 </script>
+
 <style scoped>
 button {
   font-size: 20px;
