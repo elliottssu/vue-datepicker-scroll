@@ -10,7 +10,7 @@
     <ul class="picker-li" :style="transformStyle">
       <li
         v-for="(item, index) in data"
-        v-text="item.name||item"
+        v-text="timeFormat(item.name||item)"
         :key="index"
         :class="{'disabled':item.disabled}"
       ></li>
@@ -18,6 +18,9 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
+import dayjs from "dayjs";
+import "dayjs/locale/zh-cn";
+
 export default {
   name: "picker-item",
   data() {
@@ -75,7 +78,6 @@ export default {
 
       // console.log(index, this.data, this.data.length, indexMax, vc);
 
-
       if (index >= vc) {
         index = 0; // 选择第一个
       } else if (index < indexMax) {
@@ -101,6 +103,10 @@ export default {
       //即偏移距离为(5/2取整－index)*liHeight
       //如果当前选中的为disabled状态，则往下选择，仅在滑动选择时判断，默认填值时不作判断
       //存在数据加载问题，有可能初始时数据是空的
+      if (index > this.data.length - 1) {
+        index = this.data.length - 1;
+      }
+
       if (this.data.length > 0) {
         bool ? (index = this._isDisabled(index, index)) : "";
         this.offset = (this._getVisibleCount() - index) * this.height;
@@ -132,8 +138,31 @@ export default {
           break;
         }
       }
+      // index = this.data[i].findIndex(e=>e===this.value)
       this._setIndex(index, false);
       //没有默认时或是value不存在于数据数组中时index=0
+    },
+
+    // 时间格式化
+    timeFormat(date) {
+      let time = date;
+      if (date.length > 5) {
+        time = dayjs(date)
+          .locale("zh-cn")
+          .format("YYYY年MM月DD日 dddd");
+
+        const today = dayjs()
+          .locale("zh-cn")
+          .format("YYYY年MM月DD日 dddd");
+        const todayWeek = dayjs()
+          .locale("zh-cn")
+          .format("dddd");
+
+        time = time === today ? time.replace(todayWeek, "今天") : time; // 把今天替换掉对应的周
+        time = time.replace("星期", "周"); // 把星期换成周
+      }
+
+      return time;
     }
   },
   computed: {

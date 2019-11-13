@@ -31,7 +31,7 @@
             :index="index"
             :height="liHeight"
             :change="handelChange"
-            :value="typeof value=='string'?value:value[index]"
+            :value="valueArr?valueArr[index]:''"
             ref="item"
           ></pickerItem>
         </div>
@@ -41,12 +41,15 @@
 </template>
 
 <script type="text/ecmascript-6">
+import dayjs from "dayjs";
 import pickerItem from "./picker-item";
 
 export default {
   name: "DatePickerScroll",
   data() {
     return {
+      data: this.getData(),
+      valueArr: this.getTime(this.value),
       liHeight: 0,
       newValue: this.value
     };
@@ -60,13 +63,14 @@ export default {
     }
   },
   props: {
-    visible: { ype: Boolean, default: false }, // 显示或隐藏
-    cancelText: { type: String, default: "取消" }, // 取消按钮文本
-    confirmText: { type: String, default: "确认" }, // 确定按钮文本
-    titleText: { type: String, default: "请选择" }, // 标题文本
-    visibleCount: { type: Number, default: 5 }, //显示的个数
-    data: Array, // 数据列表
-    value: [String, Array], // 返回的数值
+    visible: { type: Boolean, default: false }, // 显示或隐藏 默认：隐藏
+    cancelText: { type: String, default: "取消" }, // 取消按钮文本 默认：取消
+    confirmText: { type: String, default: "确认" }, // 确定按钮文本 默认：确认
+    titleText: { type: String, default: "请选择" }, // 标题文本 默认：请选择
+    startDate: String, // 开始日期 默认：今天的前10天 格式：2019-11-11
+    endDate: String, // 结束日期 默认：今天的后10天 格式：2019-11-12 结束时间一定要大于等于开始时间
+    visibleCount: { type: Number, default: 5 }, // 显示的个数 默认：5
+    value: { type: Date, default: new Date() }, // 选中时间 默认:当前时间
     onCancel: Function, // 取消事件
     onConfirm: Function, // 确定事件
     onChange: Function // 下拉改变时间
@@ -88,7 +92,9 @@ export default {
     // 确认
     handleConfirm(e) {
       this.$emit("update:visible", false);
-      this.onConfirm ? this.onConfirm(this.newValue) : this.$emit("input", this.newValue);
+      this.onConfirm
+        ? this.onConfirm(this.newValue)
+        : this.$emit("input", this.newValue);
       e.stopPropagation();
     },
     // 选择项改变
@@ -98,19 +104,19 @@ export default {
         //this.$emit('input', value);
         this.newValue = value;
       } else {
-        let newValue = this.newValue.slice(0);
-        newValue[index] = value;
+        this.valueArr[index] = value;
         //采用上面方法是不会同步更新的，因为vue监听的是this.value，
         //没有监听this.value的子项，所以直接改变子项不会触发更新
         //newValue.splice(index, 1, value);//先移除再添加
         //this.$emit('input', newValue);
-        this.newValue = newValue;
+        this.newValue = this.restoreTime(this.valueArr);
       }
       //bool=false时是初始时设置的
       if (bool) {
         this.onChange ? this.onChange(value, index) : "";
       }
     },
+    // 获取显示高度
     getDisplayHeight() {
       //取隐藏标签的高
       const obj = this.$refs.content;
@@ -126,6 +132,89 @@ export default {
         this.liHeight = parseFloat(window.getComputedStyle(li, null).height); //取到的精确到小数
       }
       obj.parentNode.removeChild(clone);
+    },
+
+    // 生成时间 count代表生成的数量 12/60
+    generateTime(count) {
+      let timeArr = [];
+      for (let i = 0; i <= count - 1; i++) {
+        const t = i < 10 ? "0" + i.toString() : i.toString();
+        timeArr.push(t);
+      }
+      return timeArr;
+    },
+
+    // 生成日期
+    generateDate(startDate, endDate) {
+      startDate = dayjs(startDate);
+      endDate = dayjs(endDate);
+      let dateArr = [];
+      const count = endDate.diff(startDate, "days"); // 开始与结束时间间隔
+      for (let i = count; i >= 0; i--) {
+        const t = dayjs(endDate)
+          .subtract(i, "days")
+          .toISOString();
+        dateArr.push(t);
+      }
+      return dateArr;
+    },
+
+    // 格式化时间 2019-11-11 -> IOSstring
+    timeFormat(date) {
+      return dayjs(date)
+        .startOf("day")
+        .toISOString();
+    },
+
+    // 生成data数组 三列 分别是 日期 时 分
+    getData() {
+      const hours = this.generateTime(12);
+      const minutes = this.generateTime(60);
+
+      const startDate = this.startDate
+        ? this.timeFormat(this.startDate)
+        : dayjs()
+            .startOf("day")
+            .subtract(10, "days")
+            .toISOString();
+      const endDate = this.endDate
+        ? this.timeFormat(this.endDate)
+        : dayjs()
+            .startOf("day")
+            .subtract(10, "days")
+            .toISOString();
+
+      const dates = this.generateDate(startDate, endDate);
+      return [
+        {
+          value: dates
+        },
+        {
+          value: hours
+        },
+        {
+          value: minutes
+        }
+      ];
+    },
+
+    // 生成value数组  三列 分别是 日期 时 分 将时间格式拆解
+    getTime(value) {
+      const date = dayjs(value)
+        .startOf("day")
+        .toISOString();
+      const hour = dayjs(value).format("HH");
+      const minute = dayjs(value).format("mm");
+      return [date, hour, minute];
+    },
+
+    // 生成value时间  三列 分别是 日期 时 分 将数组格式拆解
+    restoreTime(valueArr) {
+      const date = dayjs(valueArr[0]).format("YYYY-MM-DD");
+      const hour = valueArr[1];
+      const minute = valueArr[2];
+      const all = `${date} ${hour}:${minute}`;
+      return dayjs(all, "YYYY-MM-DD HH:mm").toDate();
     }
   },
   computed: {},
