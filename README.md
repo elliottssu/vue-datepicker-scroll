@@ -31,7 +31,7 @@ npm install vue-datepicker-scroll
 import Vue from 'vue'
 import App from './App.vue'
 
-import DatePickerScroll from "../packages";
+import DatePickerScroll from "vue-datepicker-scroll";
 Vue.use(DatePickerScroll)
 
 ···
