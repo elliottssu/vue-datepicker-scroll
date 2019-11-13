@@ -90,7 +90,7 @@ export default {
 | value               | Date            | new Date()      |  选中时间 默认:当前时间      |
 | onCancel            | Function        | null            |  取消事件                  |
 | onConfirm           | Function        | null            |  确定事件                  |
-| onChange            | Function        | true            |  滑动元素变化事件           |
+| onChange            | Function        | null            |  滑动元素变化事件           |
 
 
 ## Need demo?
