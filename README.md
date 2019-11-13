@@ -11,7 +11,7 @@
 
 预览效果如下：
 
-![demo](https://upload-images.jianshu.io/upload_images/3502567-ee64d1a2ce90d085.gif)
+![demo](https://github.com/Elliottssu/vue-datepicker-scroll/blob/master/examples/assets/demo.gif)
 
 ## Tips
 
