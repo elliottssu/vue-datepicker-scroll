@@ -1,6 +1,21 @@
 # vue-datepicker-scroll
 
+<p>
+  <a href="https://circleci.com/gh/vuejs/vue/tree/dev"><img src="https://img.shields.io/circleci/project/github/vuejs/vue/dev.svg" alt="Build Status"></a>
+  <a href="https://www.npmjs.com/package/vue"><img src="https://img.shields.io/npm/v/vue.svg" alt="Version"></a>
+  <a href="https://www.npmjs.com/package/vue"><img src="https://img.shields.io/npm/l/vue.svg" alt="License"></a>
+</p>
+
+
 移动端简约的可滑动时间选择组件，支持同时选择日期和时间。
+
+预览效果如下：
+
+![demo](https://upload-images.jianshu.io/upload_images/3502567-ee64d1a2ce90d085.gif)
+
+## Tips
+
+该组件请在vue移动端使用，请先定义startDate和endDate变量（2019-11-11）格式的时间区间，最终返回的是时间格式的选中变量。具体参数请查看下方**Options**配置。
 
 ## Install
 
@@ -8,9 +23,9 @@
 npm install vue-datepicker-scroll
 ```
 
-## Quick Start
+## How to use?
 
-### import
+### 1. 在main.js注册
 ```javascript
 // src/main.js
 import Vue from 'vue'
@@ -19,11 +34,11 @@ import App from './App.vue'
 import DatePickerScroll from "../packages";
 Vue.use(DatePickerScroll)
 
-...
+···
 
 ```
 
-### demo
+### 2. 在组件中使用date-picker-scroll
 ```javascript
 // src/components/HelloWorld
 
@@ -76,3 +91,23 @@ export default {
 | onCancel            | Function        | null            |  取消事件                  |
 | onConfirm           | Function        | null            |  确定事件                  |
 | onChange            | Function        | true            |  滑动元素变化事件           |
+
+
+## Need demo?
+
+You can also run this project, get a simple demo.
+
+```bash
+npm install
+npm run serve
+```
+
+You can open `http://localhost:8080/ `in your browser.
+
+## Contributing
+Contributing Feel free to submit any fixes or propose any additional functionality via pull request or issue, making sure any changes take place in /src.
+
+Minification and Validation Both are automated via npm command. Run npm install to install the required dependencies, then run npm run build from the root of the project to handle the tasks.
+
+## License
+[ISC](https://github.com/Elliottssu/vue-datepicker-scroll/blob/master/LICENSE)
