@@ -134,7 +134,7 @@ export default {
       obj.parentNode.removeChild(clone);
     },
 
-    // 生成时间 count代表生成的数量 12/60
+    // 生成时间 count代表生成的数量 24/60
     generateTime(count) {
       let timeArr = [];
       for (let i = 0; i <= count - 1; i++) {
@@ -168,7 +168,7 @@ export default {
 
     // 生成data数组 三列 分别是 日期 时 分
     getData() {
-      const hours = this.generateTime(12);
+      const hours = this.generateTime(24);
       const minutes = this.generateTime(60);
 
       const startDate = this.startDate
