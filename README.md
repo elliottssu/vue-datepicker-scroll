@@ -15,7 +15,7 @@
 
 ## Tips
 
-该组件请在vue移动端使用，请先定义startDate和endDate变量（2019-11-11）格式的时间区间，最终返回的是时间格式的选中变量。具体参数请查看下方**Options**配置。
+该组件请在vue移动端使用，请先定义startDate和endDate变量（2019-11-11）格式的时间区间（也可以不传，分别为今天的前10天和后10天），最终返回的是时间格式的选中变量。具体参数请查看下方**Options**配置。
 
 ## Install
 
@@ -49,8 +49,8 @@ Vue.use(DatePickerScroll)
 
     <date-picker-scroll
       v-model="selectedTime"
-      startDate="2019-11-10"
-      endDate="2019-11-25"
+      startDate="2019-11-10" // 不传的话为今天的前10天
+      endDate="2019-11-25"   // 不传的话为今天的后10天
       :visible.sync="isPickerVisable"
       :onConfirm="handelConfirm"
     ></date-picker-scroll>
@@ -84,8 +84,8 @@ export default {
 | cancelText          | String          | '取消'           | 取消按钮文本 默认：取消     |
 | confirmText         | String          | '确认'           | 确定按钮文本 默认：确认     |
 | titleText           | String          | '请选择'         | 标题文本 默认：请选择       |
-| startDate           | String          | null            |  yyyy-mm-dd 开始日期 默认：今天的前10天 格式：2019-11-11     |
-| endDate             | String          | null            |  yyyy-mm-dd 结束日期 默认：今天的后10天 格式：2019-11-12 结束时间一定要大于等于开始时间 |
+| startDate           | String          | 今天的前10天     |  YYYY-mm-dd 开始日期 默认：今天的前10天 格式：2019-11-11     |
+| endDate             | String          | 今天的后10天      |  YYYY-mm-dd 结束日期 默认：今天的后10天 格式：2019-11-12 结束时间一定要大于等于开始时间 |
 | visibleCount        | Number          | 5               |  显示的个数 默认：5         |
 | value               | Date            | new Date()      |  选中时间 默认:当前时间      |
 | onCancel            | Function        | null            |  取消事件                  |
@@ -107,7 +107,5 @@ You can open `http://localhost:8080/ `in your browser.
 ## Contributing
 Contributing Feel free to submit any fixes or propose any additional functionality via pull request or issue, making sure any changes take place in /src.
 
-Minification and Validation Both are automated via npm command. Run npm install to install the required dependencies, then run npm run build from the root of the project to handle the tasks.
-
 ## License
-[ISC](https://github.com/Elliottssu/vue-datepicker-scroll/blob/master/LICENSE)
+[MIT](https://github.com/Elliottssu/vue-datepicker-scroll/blob/master/LICENSE)
