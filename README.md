@@ -86,8 +86,8 @@ export default {
 | cancelText          | String          | '取消'           | 取消按钮文本 默认：取消     |
 | confirmText         | String          | '确认'           | 确定按钮文本 默认：确认     |
 | titleText           | String          | '请选择'         | 标题文本 默认：请选择       |
-| startDate           | String          | 今天的前10天     |  YYYY-mm-dd 开始日期 默认：今天的前10天 格式：2019-11-11     |
-| endDate             | String          | 今天的后10天      |  YYYY-mm-dd 结束日期 默认：今天的后10天 格式：2019-11-12 结束时间一定要大于等于开始时间 |
+| startDate           | String          | 今天的前10天     |  YYYY-MM-DD 开始日期 默认：今天的前10天 格式：2019-11-11     |
+| endDate             | String          | 今天的后10天      |  YYYY-MM-DD 结束日期 默认：今天的后10天 格式：2019-11-12 结束时间一定要大于等于开始时间 |
 | visibleCount        | Number          | 5               |  显示的个数 默认：5         |
 | value               | Date            | new Date()      |  选中时间 默认:当前时间      |
 | onCancel            | Function        | null            |  取消事件                  |
